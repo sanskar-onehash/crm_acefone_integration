@@ -98,8 +98,9 @@
   },
   {
    "fieldname": "follow_me_number",
-   "fieldtype": "Phone",
-   "label": "Follow me number"
+   "fieldtype": "Data",
+   "label": "Follow me number",
+   "options": "Phone"
   },
   {
    "fieldname": "section_break_mnab",
@@ -125,7 +126,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-22 12:47:50.467833",
+ "modified": "2025-07-22 13:44:36.728639",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone User",

@@ -28,13 +28,14 @@
    "depends_on": "enabled",
    "fieldname": "base_uri",
    "fieldtype": "Data",
-   "label": "Base URI"
+   "label": "Base URI",
+   "mandatory_depends_on": "enabled"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-07-22 10:12:39.248493",
+ "modified": "2025-07-22 13:58:40.396576",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone Integration",

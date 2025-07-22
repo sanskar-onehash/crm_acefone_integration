@@ -7,6 +7,7 @@ from crm_acephone_integration.acephone.integration.api import fetch_users
 
 SYNC_ACEPHONE_TIMEOUT = 25 * 60
 SYNC_ACEPHONE_JOB_NAME = "sync_acephone_users"
+PROGRESS_ID = "sync_acephone_users"
 
 
 class AcephoneUser(Document):
@@ -21,7 +22,11 @@ def sync_acephone_users():
         timeout=SYNC_ACEPHONE_TIMEOUT,
         job_name=SYNC_ACEPHONE_JOB_NAME,
     )
-    return {"status": "success", "msg": "Acephone Users syncing started in background."}
+    return {
+        "status": "success",
+        "msg": "Acephone Users syncing started in background.",
+        "track_on": PROGRESS_ID,
+    }
 
 
 def _sync_acephone_users():
@@ -30,7 +35,7 @@ def _sync_acephone_users():
 
     for idx, user in enumerate(acephone_users):
         frappe.publish_realtime(
-            "sync_acephone_users",
+            PROGRESS_ID,
             {"progress": idx + 1, "total": total, "title": "Syncing Acephone Users"},
         )
         existing_user = frappe.db.exists(
@@ -43,7 +48,7 @@ def _sync_acephone_users():
             for fieldname, new_value in user.items():
                 old_value = user_doc.get(fieldname)
 
-                if isinstance(new_value, int):
+                if isinstance(new_value, int) and not isinstance(new_value, bool):
                     new_value = str(new_value)
 
                 if isinstance(new_value, bool):

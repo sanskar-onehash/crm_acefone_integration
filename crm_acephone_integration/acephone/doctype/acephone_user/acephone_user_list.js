@@ -11,9 +11,8 @@ frappe.listview_settings["Acephone User"] = {
             if (response.message.status === "success") {
               frappe.show_alert(
                 response.message.msg || "Acephone Users syncing started.",
-                2,
               );
-              frappe.realtime.on("sync_acephone_users", (msg) => {
+              frappe.realtime.on(response.message.track_on, (msg) => {
                 progressDialog = frappe.show_progress(
                   msg.title || DIALOG_TITLE,
                   msg.progress,
