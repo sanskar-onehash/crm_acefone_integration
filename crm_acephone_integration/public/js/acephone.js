@@ -2,25 +2,61 @@ frappe.provide("frappe.acephone");
 
 frappe.acephone.CallPopupHandler = class CallPopupHandler {
   constructor() {
+    this.data = null;
+    this.control = null;
     this.bindEvents();
   }
 
   bindEvents() {
     frappe.realtime.on("agent_answered_call", (data) => {
-      this.showCallPopup(data);
+      this.data = data;
+      this.showCallPopup();
     });
   }
 
-  showCallPopup(data) {
-    const quickEntryDialog = frappe.ui.form.make_quick_entry(
+  async showCallPopup(minimized = false) {
+    this.control = await frappe.ui.form.make_quick_entry(
       "Acephone Call Note",
       null,
-      () => {
-        console.log("Make Note");
-      },
-      data,
+      null,
+      this.data,
       true,
     );
+    const $minimizeBtn = this.control.dialog.get_minimize_btn();
+    $minimizeBtn.removeClass("hide");
+    $minimizeBtn.click(() => this.toggleMinimize());
+
+    if (minimized) {
+      this.control.dialog.toggle_minimize();
+    }
+
+    this.control.dialog.add_custom_action(
+      "View Linked Doc",
+      () => this.handleViewDoc(),
+      "btn-primary",
+    );
+    this.control.dialog.add_custom_action(
+      "Minimize",
+      () => this.toggleMinimize(),
+      "btn-primary ml-2",
+    );
+  }
+
+  async handleViewDoc() {
+    const doctype = this.control.dialog.get_value("note_for");
+    const docname = this.control.dialog.get_value("linked_doc");
+
+    if (doctype && docname) {
+      await frappe.set_route("Form", doctype, docname);
+      this.control.dialog.cancel();
+      this.showCallPopup(true);
+    } else {
+      frappe.throw("Note For & Linked Doc are required to view doc.");
+    }
+  }
+
+  toggleMinimize() {
+    this.control.dialog.toggle_minimize();
   }
 };
 
