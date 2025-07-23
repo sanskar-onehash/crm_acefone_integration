@@ -2,7 +2,12 @@ import frappe
 from phonenumbers import parse, format_number, PhoneNumberFormat
 
 AGENT_STATUS_MAP = ["Enabled", "Blocked", "Disabled" "Busy", "Offline"]
-DIRECTION_CALL_TYPE_MAP = {"inbound": "Inbound", "outbound": "Outbound"}
+DIRECTION_CALL_TYPE_MAP = {
+    "inbound": "Inbound",
+    "outbound": "Outbound",
+    "clicktocall": "Click To Call",
+}
+CALL_STATUS_MAP = {"misssed": "Missed", "answered": "Answered"}
 
 
 def format_user_res(user):
@@ -48,7 +53,7 @@ def format_call_completed(call_data):
             if call_data.get("direction")
             else ""
         ),
-        "call_status": call_data.get("call_status"),
+        "call_status": CALL_STATUS_MAP.get(call_data.get("call_status")),
         "start_stamp": call_data.get("start_stamp"),
         "answer_stamp": call_data.get("answer_stamp"),
         "end_stamp": call_data.get("end_stamp"),

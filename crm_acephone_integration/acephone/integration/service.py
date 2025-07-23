@@ -42,3 +42,4 @@ def handle_call_answered_by_agent(call_data):
 def handle_call_complete(call_data):
     call_data = utils.format_call_completed(call_data)
     frappe.get_doc({"doctype": "Acephone Call Log", **call_data}).save()
+    frappe.db.commit()

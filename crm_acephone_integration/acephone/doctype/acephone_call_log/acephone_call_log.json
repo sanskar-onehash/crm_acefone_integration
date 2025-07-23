@@ -88,7 +88,7 @@
    "fieldname": "call_type",
    "fieldtype": "Select",
    "label": "Call Type",
-   "options": "\nInbound\nOutbound"
+   "options": "\nClick To Call\nInbound\nOutbound"
   },
   {
    "fieldname": "call_status",
@@ -172,7 +172,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-23 10:55:45.635324",
+ "modified": "2025-07-23 12:35:35.620578",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone Call Log",
