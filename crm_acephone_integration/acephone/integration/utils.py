@@ -89,10 +89,21 @@ def get_missed_agents(call_data):
     return missed_agents
 
 
-def get_acephone_user_by_number(agent_number):
+def get_acephone_user_by_number(agent_number, only_enabled=False):
     if agent_number:
-        return frappe.get_doc("Acephone User", {"follow_me_number": agent_number})
+        filters = {"follow_me_number": agent_number}
+        if only_enabled:
+            filters["disabled"] = 0
+        return frappe.get_doc("Acephone User", filters)
     return None
+
+
+def get_acephone_user_by_session(only_enabled=False):
+    filters = {"user": frappe.session.user}
+    if only_enabled:
+        filters["disabled"] = 0
+
+    return frappe.get_doc("Acephone User", filters)
 
 
 def get_phone_normalized_forms(raw_number: str, default_region="IN") -> list[str]:

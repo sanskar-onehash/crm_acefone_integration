@@ -3,6 +3,7 @@ import requests
 
 from crm_acephone_integration.acephone.integration.auth import get_headers
 from crm_acephone_integration.acephone.integration import utils
+from crm_acephone_integration.config.config import ROLE_KEY_TO_NAME
 
 
 API_VERSION = "v1"
@@ -57,3 +58,25 @@ def fetch_users():
             users.append(utils.format_user_res(user_data))
 
     return users
+
+
+@frappe.whitelist()
+def click_to_call(destination_number, acephone_user=None):
+    if acephone_user:
+        if ROLE_KEY_TO_NAME["ACEPHONE_ADMINISTRATOR"] in frappe.get_roles():
+            acephone_user = frappe.get_doc("Acephone User", acephone_user)
+    else:
+        acephone_user = utils.get_acephone_user_by_session(only_enabled=True)
+
+    if not acephone_user:
+        frappe.throw("User don't have corresponding enabled acephone agent.")
+
+    res = make_post_request(
+        "click_to_call",
+        data={
+            "agent_number": acephone_user.get("agent_id"),
+            "destination_number": destination_number,
+        },
+    )
+    res.raise_for_status()
+    return res.json()
