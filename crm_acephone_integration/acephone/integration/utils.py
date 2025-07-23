@@ -39,6 +39,13 @@ def format_user_res(user):
 
 
 def format_call_completed(call_data):
+    agent_id = call_data.get("agent", {}).get("id")
+    acephone_user = None
+    if agent_id:
+        acephone_user = get_acephone_user_by_agent_id(agent_id)
+    else:
+        acephone_user = get_acephone_user_by_number(call_data.get("agent_number"))
+
     return {
         "uuid": call_data.get("uuid"),
         "call_id": call_data.get("call_id"),
@@ -46,7 +53,7 @@ def format_call_completed(call_data):
         "caller_id": call_data.get("caller_id"),
         "agent_number": call_data.get("answered_agent_number"),
         "agent_name": call_data.get("answered_agent_name"),
-        "acephone_user": get_acephone_user_by_number(call_data.get("agent_number")),
+        "acephone_user": acephone_user,
         "missed_agents": get_missed_agents(call_data),
         "call_type": (
             DIRECTION_CALL_TYPE_MAP[call_data.get("direction")]
@@ -74,7 +81,7 @@ def get_call_note_name(call_data):
 
 
 def get_missed_agents(call_data):
-    missed_agents_data = call_data.get("missed_agent")
+    missed_agents_data = call_data.get("missed_agent") or []
     missed_agents = []
 
     if isinstance(missed_agents_data, dict):
@@ -92,6 +99,15 @@ def get_missed_agents(call_data):
         )
 
     return missed_agents
+
+
+def get_acephone_user_by_agent_id(agent_id, only_enabled=False):
+    if agent_id:
+        filters = {"agent_id": agent_id}
+        if only_enabled:
+            filters["disabled"] = 0
+        return frappe.get_doc("Acephone User", filters)
+    return None
 
 
 def get_acephone_user_by_number(agent_number, only_enabled=False):
