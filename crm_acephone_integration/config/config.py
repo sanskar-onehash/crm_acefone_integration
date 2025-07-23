@@ -1,5 +1,6 @@
 ROLES = {
     "ACEPHONE_ADMINISTRATOR": {"role_name": "Acephone Administrator"},
+    "ACEPHONE_CONNECTOR": {"role_name": "Acephone Connector"},
     "ACEPHONE_USER": {"role_name": "Acephone User"},
 }
 

@@ -26,7 +26,7 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/crm_acephone_integration/css/crm_acephone_integration.css"
-# app_include_js = "/assets/crm_acephone_integration/js/crm_acephone_integration.js"
+app_include_js = "/assets/acephone/js/acephone.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/crm_acephone_integration/css/crm_acephone_integration.css"

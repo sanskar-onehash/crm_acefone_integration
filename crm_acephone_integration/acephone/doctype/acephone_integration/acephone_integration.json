@@ -35,7 +35,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-07-22 13:58:40.396576",
+ "modified": "2025-07-23 10:58:02.684904",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone Integration",
@@ -50,6 +50,24 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Acephone Administrator",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Acephone User",
+   "select": 1,
+   "share": 1
   }
  ],
  "sort_field": "modified",
