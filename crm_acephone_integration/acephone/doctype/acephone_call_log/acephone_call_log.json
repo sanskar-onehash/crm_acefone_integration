@@ -28,8 +28,11 @@
   "recording_url",
   "section_break_ufec",
   "hangup_cause",
+  "reason_key",
   "column_break_dzel",
   "call_note",
+  "call_for_doc",
+  "linked_doc",
   "section_break_rscg",
   "missed_agents"
  ],
@@ -144,7 +147,7 @@
   },
   {
    "fieldname": "hangup_cause",
-   "fieldtype": "Text",
+   "fieldtype": "Small Text",
    "label": "Hangup Cause"
   },
   {
@@ -168,11 +171,30 @@
    "fieldtype": "Link",
    "label": "Call Note",
    "options": "Acephone Call Note"
+  },
+  {
+   "fetch_from": "call_note.note_for",
+   "fieldname": "call_for_doc",
+   "fieldtype": "Link",
+   "label": "Call For Doc",
+   "options": "DocType"
+  },
+  {
+   "fetch_from": "call_note.linked_doc",
+   "fieldname": "linked_doc",
+   "fieldtype": "Dynamic Link",
+   "label": "Linked Doc",
+   "options": "call_for_doc"
+  },
+  {
+   "fieldname": "reason_key",
+   "fieldtype": "Small Text",
+   "label": "Reason Key"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-23 12:35:35.620578",
+ "modified": "2025-07-23 16:37:53.462469",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone Call Log",

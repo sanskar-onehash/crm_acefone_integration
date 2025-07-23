@@ -69,6 +69,7 @@ def format_call_completed(call_data):
         "agent_ring_time": call_data.get("agent_ring_time"),
         "recording_url": call_data.get("recording_url"),
         "hangup_cause": call_data.get("hangup_cause"),
+        "reason_key": call_data.get("reason_key"),
         "call_note": get_call_note_name(call_data),
     }
 
