@@ -1,6 +1,9 @@
 frappe.provide("frappe.acephone");
 
 frappe.acephone.CallPopupHandler = class CallPopupHandler {
+  static NOTE_DOCTYPE = "Acephone Call Note";
+  static REALTIME_EVENT_ID = "agent_answered_call";
+
   constructor() {
     this.data = null;
     this.control = null;
@@ -8,15 +11,21 @@ frappe.acephone.CallPopupHandler = class CallPopupHandler {
   }
 
   bindEvents() {
-    frappe.realtime.on("agent_answered_call", (data) => {
-      this.data = data;
-      this.showCallPopup();
-    });
+    frappe.realtime.on(
+      frappe.acephone.CallPopupHandler.REALTIME_EVENT_ID,
+      (data) => {
+        this.data = {
+          doctype: frappe.acephone.CallPopupHandler.NOTE_DOCTYPE,
+          ...data,
+        };
+        this.showCallPopup();
+      },
+    );
   }
 
   async showCallPopup(minimized = false) {
     this.control = await frappe.ui.form.make_quick_entry(
-      "Acephone Call Note",
+      frappe.acephone.CallPopupHandler.NOTE_DOCTYPE,
       null,
       null,
       this.data,
