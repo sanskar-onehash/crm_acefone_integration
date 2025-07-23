@@ -7,7 +7,7 @@ DIRECTION_CALL_TYPE_MAP = {
     "outbound": "Outbound",
     "clicktocall": "Click To Call",
 }
-CALL_STATUS_MAP = {"misssed": "Missed", "answered": "Answered"}
+CALL_STATUS_MAP = {"missed": "Missed", "answered": "Answered"}
 
 
 def format_user_res(user):
