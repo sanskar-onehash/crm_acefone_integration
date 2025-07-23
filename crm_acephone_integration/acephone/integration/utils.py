@@ -26,7 +26,7 @@ def format_user_res(user):
             and agent.get("status", -1) < len(AGENT_STATUS_MAP)
             else ""
         ),
-        "agent_number": agent.get("follow_me_number"),
+        "follow_me_number": agent.get("follow_me_number"),
         "role_id": role.get("id"),
         "role_name": role.get("name"),
         "intercom": user.get("intercom"),
@@ -91,7 +91,7 @@ def get_missed_agents(call_data):
 
 def get_acephone_user_by_number(agent_number):
     if agent_number:
-        return frappe.get_doc("Acephone User", {"agent_number": agent_number})
+        return frappe.get_doc("Acephone User", {"follow_me_number": agent_number})
     return None
 
 
