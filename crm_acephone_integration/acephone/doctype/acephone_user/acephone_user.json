@@ -94,8 +94,6 @@
   {
    "fieldname": "agent_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Agent Name"
   },
   {
@@ -156,7 +154,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-24 09:00:41.336310",
+ "modified": "2025-07-24 09:08:30.630707",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone User",
