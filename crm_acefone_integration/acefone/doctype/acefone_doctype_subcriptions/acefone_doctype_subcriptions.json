@@ -1,0 +1,45 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2025-07-23 08:49:32.686278",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": ["subscribed_for", "phone_field", "phone_fieldname"],
+  "fields": [
+    {
+      "fieldname": "subscribed_for",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Subscribed For",
+      "options": "DocType",
+      "reqd": 1
+    },
+    {
+      "fieldname": "phone_field",
+      "fieldtype": "Autocomplete",
+      "in_list_view": 1,
+      "label": "Phone Field",
+      "reqd": 1
+    },
+    {
+      "fieldname": "phone_fieldname",
+      "fieldtype": "Data",
+      "label": "Phone Fieldname",
+      "reqd": 1
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "istable": 1,
+  "links": [],
+  "modified": "2025-07-23 08:51:55.851525",
+  "modified_by": "Administrator",
+  "module": "Acefone",
+  "name": "Acefone DocType Subcriptions",
+  "owner": "Administrator",
+  "permissions": [],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
+}
+

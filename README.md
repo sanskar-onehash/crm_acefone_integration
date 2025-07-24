@@ -1,7 +1,8 @@
-## Servetel Acephone
+## Servetel Acefone
 
-The connects OneHash with Acephone to streamline calling processes.
+The app connects OneHash with Acefone to streamline calling processes.
 
 #### License
 
 mit
+

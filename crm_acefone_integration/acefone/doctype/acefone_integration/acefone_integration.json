@@ -1,0 +1,73 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2025-07-18 09:47:36.312476",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": ["enabled", "base_uri", "api_token"],
+  "fields": [
+    {
+      "default": "0",
+      "fieldname": "enabled",
+      "fieldtype": "Check",
+      "label": "Enabled"
+    },
+    {
+      "depends_on": "enabled",
+      "fieldname": "api_token",
+      "fieldtype": "Password",
+      "label": "API Token",
+      "mandatory_depends_on": "enabled"
+    },
+    {
+      "default": "https://api.acefone.in/",
+      "depends_on": "enabled",
+      "fieldname": "base_uri",
+      "fieldtype": "Data",
+      "label": "Base URI",
+      "mandatory_depends_on": "enabled"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "issingle": 1,
+  "links": [],
+  "modified": "2025-07-23 10:58:02.684904",
+  "modified_by": "Administrator",
+  "module": "Acefone",
+  "name": "Acefone Integration",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "Acefone Administrator",
+      "select": 1,
+      "share": 1,
+      "write": 1
+    },
+    {
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "Acefone User",
+      "select": 1,
+      "share": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
+}
+
