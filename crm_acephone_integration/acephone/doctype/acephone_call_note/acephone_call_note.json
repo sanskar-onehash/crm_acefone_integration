@@ -23,6 +23,7 @@
    "allow_in_quick_entry": 1,
    "fieldname": "note_for",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Note For",
    "options": "DocType"
   },
@@ -56,12 +57,14 @@
    "allow_in_quick_entry": 1,
    "fieldname": "note",
    "fieldtype": "Text Editor",
+   "in_list_view": 1,
    "label": "Note"
   },
   {
    "allow_in_quick_entry": 1,
    "fieldname": "acephone_user",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Acephone User",
    "options": "Acephone User",
    "read_only": 1
@@ -99,7 +102,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-23 10:55:37.335394",
+ "modified": "2025-07-24 08:43:30.426231",
  "modified_by": "Administrator",
  "module": "Acephone",
  "name": "Acephone Call Note",
