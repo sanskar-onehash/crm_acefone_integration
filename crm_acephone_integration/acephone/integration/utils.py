@@ -27,7 +27,7 @@ def format_user_res(user):
         "agent_name": agent.get("name"),
         "agent_status": (
             AGENT_STATUS_MAP[agent.get("status")]
-            if agent.get("status", -1) > 0
+            if agent.get("status", -1) >= 0
             and agent.get("status", -1) < len(AGENT_STATUS_MAP)
             else ""
         ),
