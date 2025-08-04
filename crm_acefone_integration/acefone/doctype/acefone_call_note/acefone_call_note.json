@@ -1,12 +1,14 @@
 {
   "actions": [],
   "allow_rename": 1,
+  "autoname": "naming_series:",
   "creation": "2025-07-22 21:45:33.317594",
   "doctype": "DocType",
   "engine": "InnoDB",
   "field_order": [
     "section_break_nxpi",
     "column_break_kepo",
+    "naming_series",
     "note_for",
     "linked_doc",
     "column_break_nlav",
@@ -98,14 +100,24 @@
       "fieldtype": "Data",
       "hidden": 1,
       "label": "UUID"
+    },
+    {
+      "default": "ACF-CLN-",
+      "fieldname": "naming_series",
+      "fieldtype": "Select",
+      "hidden": 1,
+      "label": "Naming Series",
+      "options": "ACF-CLN-",
+      "reqd": 1
     }
   ],
   "index_web_pages_for_search": 1,
   "links": [],
-  "modified": "2025-07-24 11:51:30.774022",
+  "modified": "2025-08-04 10:09:36.234878",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone Call Note",
+  "naming_rule": "By \"Naming Series\" field",
   "owner": "Administrator",
   "permissions": [
     {

@@ -38,12 +38,12 @@
   ],
   "fields": [
     {
-      "default": "ACP-CL-",
+      "default": "ACF-CL-",
       "fieldname": "naming_series",
       "fieldtype": "Select",
       "hidden": 1,
       "label": "Naming Series",
-      "options": "ACP-CL-",
+      "options": "ACF-CL-",
       "reqd": 1
     },
     {
@@ -204,7 +204,7 @@
   ],
   "index_web_pages_for_search": 1,
   "links": [],
-  "modified": "2025-07-24 11:51:31.026221",
+  "modified": "2025-08-04 10:06:54.343851",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone Call Log",

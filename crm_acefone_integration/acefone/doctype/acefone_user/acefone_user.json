@@ -30,12 +30,12 @@
   ],
   "fields": [
     {
-      "default": "ACP-AGENT-",
+      "default": "ACF-AGENT-",
       "fieldname": "naming_series",
       "fieldtype": "Select",
       "hidden": 1,
       "label": "Naming Series",
-      "options": "ACP-AGENT-",
+      "options": "ACF-AGENT-",
       "reqd": 1
     },
     {
@@ -154,7 +154,7 @@
   ],
   "index_web_pages_for_search": 1,
   "links": [],
-  "modified": "2025-07-24 11:50:29.906587",
+  "modified": "2025-08-04 10:05:53.615925",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone User",
