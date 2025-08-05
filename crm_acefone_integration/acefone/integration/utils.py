@@ -39,7 +39,7 @@ def format_user_res(user):
 
 
 def format_call_completed(call_data):
-    agent_id = call_data.get("agent", {}).get("id")
+    agent_id = (call_data.get("agent") or {}).get("id")
     acefone_user = None
     if agent_id:
         acefone_user = get_acefone_user_by_agent_id(agent_id)
