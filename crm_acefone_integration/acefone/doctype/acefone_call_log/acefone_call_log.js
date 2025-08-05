@@ -18,8 +18,8 @@ function addPlayRecordingBtn(frm) {
     return;
   }
   const BTN_LABEL = "Play Recording";
-  frm.page.remove_inner_btn(BTN_LABEL);
-  frm.page.add_inner_btn(
+  frm.page.remove_inner_button(BTN_LABEL);
+  frm.page.add_inner_button(
     BTN_LABEL,
     () => playAudioPopup(frm.doc.recording_url),
     null,
