@@ -62,7 +62,7 @@ def fetch_users():
 
 
 @frappe.whitelist()
-def click_to_call(destination_number, acefone_user=None):
+def click_to_call(destination_number, source_doctype, source_name, acefone_user=None):
     if acefone_user:
         if ROLE_KEY_TO_NAME["ACEFONE_ADMINISTRATOR"] in frappe.get_roles():
             acefone_user = frappe.get_doc("Acefone User", acefone_user)
@@ -80,4 +80,14 @@ def click_to_call(destination_number, acefone_user=None):
         },
     )
     res.raise_for_status()
+
+    frappe.get_doc(
+        {
+            "acefone_user": acefone_user.get("name"),
+            "destination": utils.clean_number(destination_number),
+            "doctype": "Acefone Click To Call Log",
+            "source_doc": source_name,
+            "source_doctype": source_doctype,
+        }
+    ).save()
     return res.json()

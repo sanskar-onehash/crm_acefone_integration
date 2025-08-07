@@ -26,7 +26,7 @@ def handle_call_answered_by_agent(call_data):
         "linked_doc": None,
     }
 
-    for subscription in acefone_user.get("call_subscriptions", []):
+    for subscription in acefone_user.get("call_subscriptions") or []:
         existed_doc = frappe.db.exists(
             subscription.get("subscribed_for"),
             {subscription.get("phone_fieldname"): ["in", possible_phone_forms]},
@@ -41,5 +41,12 @@ def handle_call_answered_by_agent(call_data):
 
 def handle_call_complete(call_data):
     call_data = utils.format_call_completed(call_data)
-    frappe.get_doc({"doctype": "Acefone Call Log", **call_data}).save()
-    frappe.db.commit()
+    linked_doc = utils.get_linked_doc_for_call_log(call_data)
+
+    frappe.get_doc(
+        {
+            "doctype": "Acefone Call Log",
+            **linked_doc,
+            **call_data,
+        }
+    ).save()

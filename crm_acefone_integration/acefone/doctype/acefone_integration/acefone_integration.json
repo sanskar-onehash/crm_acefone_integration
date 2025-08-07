@@ -4,7 +4,13 @@
   "creation": "2025-07-18 09:47:36.312476",
   "doctype": "DocType",
   "engine": "InnoDB",
-  "field_order": ["enabled", "base_uri", "api_token"],
+  "field_order": [
+    "enabled",
+    "base_uri",
+    "api_token",
+    "call_logs_section",
+    "call_log_subscriptions"
+  ],
   "fields": [
     {
       "default": "0",
@@ -26,12 +32,24 @@
       "fieldtype": "Data",
       "label": "Base URI",
       "mandatory_depends_on": "enabled"
+    },
+    {
+      "depends_on": "enabled",
+      "fieldname": "call_log_subscriptions",
+      "fieldtype": "Table",
+      "label": "Call Log Subscriptions",
+      "options": "Acefone DocType Subcriptions"
+    },
+    {
+      "fieldname": "call_logs_section",
+      "fieldtype": "Section Break",
+      "label": "Call Logs"
     }
   ],
   "index_web_pages_for_search": 1,
   "issingle": 1,
   "links": [],
-  "modified": "2025-07-23 10:58:02.684904",
+  "modified": "2025-08-06 14:35:15.930200",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone Integration",

@@ -182,6 +182,7 @@
     },
     {
       "fetch_from": "call_note.note_for",
+      "fetch_if_empty": 1,
       "fieldname": "call_for_doc",
       "fieldtype": "Link",
       "in_list_view": 1,
@@ -191,6 +192,7 @@
     },
     {
       "fetch_from": "call_note.linked_doc",
+      "fetch_if_empty": 1,
       "fieldname": "linked_doc",
       "fieldtype": "Dynamic Link",
       "label": "Linked Doc",
@@ -204,7 +206,7 @@
   ],
   "index_web_pages_for_search": 1,
   "links": [],
-  "modified": "2025-08-04 10:06:54.343851",
+  "modified": "2025-08-07 09:12:21.802416",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone Call Log",
