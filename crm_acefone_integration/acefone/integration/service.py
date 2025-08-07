@@ -3,6 +3,7 @@ import frappe
 from crm_acefone_integration.acefone.integration import utils
 
 CALL_ANSWERED_EVENT = "agent_answered_call"
+CALL_LOG_ADDED_EVENT = "acefone_call_log_added"
 
 
 def handle_call_answered_by_agent(call_data):
@@ -43,10 +44,20 @@ def handle_call_complete(call_data):
     call_data = utils.format_call_completed(call_data)
     linked_doc = utils.get_linked_doc_for_call_log(call_data)
 
-    frappe.get_doc(
+    call_log_doc = frappe.get_doc(
         {
             "doctype": "Acefone Call Log",
             **linked_doc,
             **call_data,
         }
     ).save()
+
+    frappe.publish_realtime(
+        CALL_LOG_ADDED_EVENT,
+        {
+            "call_log": call_log_doc.name,
+            "call_for_doc": call_log_doc.call_for_doc,
+            "linked_doc": call_log_doc.linked_doc,
+        },
+        after_commit=True,
+    )
