@@ -73,7 +73,7 @@ function render_call_logs_html(callLogs) {
     const start = frappe.datetime.str_to_user(log.start_stamp) || "";
     const duration = log.duration || "0s";
     const recording = log.recording_url
-      ? `<a href="${log.recording_url}" target="_blank" class="btn btn-outline-primary btn-sm">Play Recording</a>`
+      ? `<button data-url="${log.recording_url}" class="btn btn-outline-primary btn-sm acefone_play_btn">Play Recording</button>`
       : `<span class="text-muted">No Recording</span>`;
 
     const statusBadge =
@@ -125,5 +125,32 @@ function inject_call_log_tab(frm, html) {
   tab.wrapper
     .find(`[data-fieldname='${ACEFONE_CALL_LOGS_FIELD}']`)
     .append(html);
+  tab.wrapper.click(function (e) {
+    const playBtn = e.target.closest(".acefone_play_btn");
+    if (playBtn) {
+      playAudioPopup(playBtn.dataset.url);
+    }
+  });
   tab.toggle(true);
+}
+
+function playAudioPopup(audioUrl) {
+  if (!audioUrl) {
+    frappe.msgprint(__("No audio URL found in the document."));
+    return;
+  }
+
+  const audio_html = `
+        <audio controls autoplay style="width: 100%;">
+            <source src="${audioUrl}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    `;
+
+  frappe.msgprint({
+    title: __("Audio Player"),
+    indicator: "blue",
+    message: audio_html,
+    wide: true,
+  });
 }
