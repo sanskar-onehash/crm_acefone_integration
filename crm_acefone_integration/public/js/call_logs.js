@@ -64,7 +64,25 @@ async function reload_call_logs(frm) {
 }
 
 function render_call_logs_html(callLogs) {
-  let html = `<div class="acefone-call-logs-cards row gy-3">`;
+  let html = `<div class="acefone-call-logs-list"><style>
+.acefone-call-logs-list {
+display: flex;
+flex-direction: column;
+gap: 1rem;
+}
+.call-log-card {
+  transition: box-shadow 0.2s ease;
+  border-radius: 0.5rem;
+}
+.call-log-card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.07);
+}
+.call-log-card .badge {
+  font-size: 0.75rem;
+  padding: 0.4em 0.6em;
+  border-radius: 0.375rem;
+}
+</style>`;
 
   callLogs.forEach((log) => {
     const type = log.call_type || "";
@@ -72,27 +90,39 @@ function render_call_logs_html(callLogs) {
     const number = log.customer_phone || log.caller_id || "";
     const start = frappe.datetime.str_to_user(log.start_stamp) || "";
     const duration = log.duration || "0s";
+
     const recording = log.recording_url
-      ? `<button data-url="${log.recording_url}" class="btn btn-outline-primary btn-sm acefone_play_btn">Play Recording</button>`
+      ? `<button data-url="${log.recording_url}" class="btn btn-outline-primary btn-sm acefone_play_btn">
+          <i class="fa fa-play-circle-o me-1"></i> Play Recording
+         </button>`
       : `<span class="text-muted">No Recording</span>`;
 
     const statusBadge =
       status === "Missed"
-        ? `<span class="badge bg-danger">${status}</span>`
-        : `<span class="badge bg-success">${status}</span>`;
+        ? `<span class="badge bg-danger-subtle text-danger border border-danger-subtle">${status}</span>`
+        : `<span class="badge bg-success-subtle text-success border border-success-subtle">${status}</span>`;
 
-    const typeBadge = `<span class="badge bg-secondary">${type}</span>`;
+    const typeBadge = `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">${type}</span>`;
 
     html += `
-      <div class="col-md-6">
-        <div class="card shadow-sm border-0">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              ${typeBadge} ${statusBadge}
+      <div class="card call-log-card mb-3 shadow-sm border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+          <div class="mb-2 mb-md-0">
+            <h5 class="mb-1 text-primary">
+              <i class="fa fa-phone me-2"></i> ${number}
+            </h5>
+            <div class="text-muted small mb-1">
+              <i class="fa fa-clock me-1"></i> ${start}
+              &nbsp;|&nbsp;
+              <i class="fa fa-hourglass-half me-1"></i> ${duration}
             </div>
-            <h6 class="card-title mb-1">📞 ${number}</h6>
-            <p class="mb-1 text-muted">🕒 ${start} &nbsp; | &nbsp; ⏱ ${duration}</p>
-            <div>${recording}</div>
+            <div class="d-flex flex-wrap gap-2">
+              ${typeBadge}
+              ${statusBadge}
+            </div>
+          </div>
+          <div>
+            ${recording}
           </div>
         </div>
       </div>
