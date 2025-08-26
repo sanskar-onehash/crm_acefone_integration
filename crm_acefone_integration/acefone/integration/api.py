@@ -79,15 +79,18 @@ def click_to_call(destination_number, source_doctype, source_name, acefone_user=
             "destination_number": destination_number,
         },
     )
-    res.raise_for_status()
+    try:
+        res.raise_for_status()
+        frappe.get_doc(
+            {
+                "acefone_user": acefone_user.get("name"),
+                "destination": utils.clean_number(destination_number),
+                "doctype": "Acefone Click To Call Log",
+                "source_doc": source_name,
+                "source_doctype": source_doctype,
+            }
+        ).save()
+    except Exception as e:
+        return res.json()
 
-    frappe.get_doc(
-        {
-            "acefone_user": acefone_user.get("name"),
-            "destination": utils.clean_number(destination_number),
-            "doctype": "Acefone Click To Call Log",
-            "source_doc": source_name,
-            "source_doctype": source_doctype,
-        }
-    ).save()
     return res.json()
