@@ -154,7 +154,7 @@
   ],
   "index_web_pages_for_search": 1,
   "links": [],
-  "modified": "2025-08-04 10:05:53.615925",
+  "modified": "2025-08-26 14:12:15.492654",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone User",
@@ -207,8 +207,10 @@
       "share": 1
     }
   ],
+  "show_title_field_in_link": 1,
   "sort_field": "modified",
   "sort_order": "DESC",
-  "states": []
+  "states": [],
+  "title_field": "user_name"
 }
 
