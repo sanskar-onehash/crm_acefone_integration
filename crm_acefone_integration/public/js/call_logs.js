@@ -1,5 +1,7 @@
 const CALL_LOG_ADDED_EVENT = "acefone_call_log_added";
 const ACEFONE_CALL_LOGS_FIELD = "acefone_call_logs_html";
+const ACEFONE_TAB_CALL_LOGS_FIELD = "acefone_tab_call_logs_html";
+const ACEFONE_CALL_LOG_TAB_LABEL = "Call Logs";
 
 const acefone_hooked_doctypes = new Set();
 $(document).on("form-refresh", function (_, frm) {
@@ -8,11 +10,8 @@ $(document).on("form-refresh", function (_, frm) {
 
   acefone_hooked_doctypes.add(frm.doctype);
   frappe.ui.form.on(frm.doctype, {
-    async refresh(frm) {
-      if (!frm.docname || frm.__acefone_logs_loaded) return;
-
-      frm.__acefone_logs_loaded = true;
-      await reload_call_logs(frm);
+    refresh(frm) {
+      reload_call_logs(frm);
     },
   });
 });
@@ -30,15 +29,19 @@ frappe.realtime.on(CALL_LOG_ADDED_EVENT, function (data) {
   ) {
     const frm = frappe.ui.form.get_current();
     if (frm) {
-      frm.__acefone_logs_loaded = false;
-      reload_call_logs(frm);
-      frappe.show_alert({ message: "New call log added", indicator: "green" });
+      reload_call_logs(frm).then(() => {
+        frappe.show_alert({
+          message: "New call log added",
+          indicator: "green",
+        });
+      });
     }
   }
 });
 
 async function reload_call_logs(frm) {
   try {
+    reset_call_log_ui(frm);
     const response = await frappe.call({
       method:
         "crm_acefone_integration.acefone.doctype.acefone_call_log.acefone_call_log.get_call_logs",
@@ -134,26 +137,25 @@ gap: 1rem;
 }
 
 function inject_call_log_tab(frm, html) {
-  const tab_label = "Call Logs";
-
-  let tab = frm.layout.tabs.find((tab) => tab.label === tab_label);
-  if (tab) {
-    tab.section.$wrapper.empty().append(html);
-  } else {
+  let tab = frm.layout.tabs.find(
+    (tab) => tab.label === ACEFONE_CALL_LOG_TAB_LABEL,
+  );
+  if (!tab) {
     tab = frm.layout.make_tab({
-      label: tab_label,
+      label: ACEFONE_CALL_LOG_TAB_LABEL,
       fieldtype: "Tab Break",
       fieldname: "acefone_custom_cl_tab",
     });
     frm.layout.make_field({
-      fieldname: ACEFONE_CALL_LOGS_FIELD,
+      fieldname: ACEFONE_TAB_CALL_LOGS_FIELD,
       label: "Acefone Call Logs HTML",
       fieldtype: "HTML",
     });
   }
 
   tab.wrapper
-    .find(`[data-fieldname='${ACEFONE_CALL_LOGS_FIELD}']`)
+    .find(`[data-fieldname='${ACEFONE_TAB_CALL_LOGS_FIELD}']`)
+    .empty()
     .append(html);
   tab.wrapper.click(function (e) {
     const playBtn = e.target.closest(".acefone_play_btn");
@@ -162,6 +164,25 @@ function inject_call_log_tab(frm, html) {
     }
   });
   tab.toggle(true);
+  tab.show();
+}
+
+function reset_call_log_ui(frm) {
+  if (frm.fields_dict[ACEFONE_CALL_LOGS_FIELD]) {
+    frm.fields_dict[ACEFONE_CALL_LOGS_FIELD].$wrapper.empty();
+  } else {
+    remove_call_log_tab(frm);
+  }
+}
+
+function remove_call_log_tab(frm) {
+  let tab = frm.layout.tabs.find(
+    (tab) => tab.label === ACEFONE_CALL_LOG_TAB_LABEL,
+  );
+  if (tab) {
+    frm.fields_dict[ACEFONE_TAB_CALL_LOGS_FIELD].$wrapper.empty();
+    tab.hide();
+  }
 }
 
 function playAudioPopup(audioUrl) {
