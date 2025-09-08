@@ -37,27 +37,55 @@ def handle_call_answered_by_agent(call_data):
             message["linked_doc"] = existed_doc
             break
 
-    frappe.publish_realtime(CALL_ANSWERED_EVENT, message, user=user)
+    now_datetime = frappe.utils.get_datetime()
+    creation_start = frappe.utils.add_to_date(
+        now_datetime, minutes=-5, as_datetime=True
+    )
+    creation_end = frappe.utils.add_to_date(now_datetime, seconds=30, as_datetime=True)
+
+    c2c_log_values = frappe.db.get_value(
+        "Acefone Click To Call Log",
+        {
+            "acefone_user": acefone_user.name,
+            "destination": ["in", possible_phone_forms],
+            "creation": ["between", [creation_start, creation_end]],
+        },
+        ["source_doc", "source_doctype"],
+        as_dict=True,
+    )
+    if c2c_log_values:
+        frappe.publish_realtime(
+            CALL_ANSWERED_EVENT,
+            message,
+            user=user,
+            doctype=c2c_log_values.get("source_doctype") or None,
+            docname=c2c_log_values.get("source_doc") or None,
+        )
+    else:
+        frappe.publish_realtime(CALL_ANSWERED_EVENT, message, user=user)
 
 
 def handle_call_complete(call_data):
-    call_data = utils.format_call_completed(call_data)
-    linked_doc = utils.get_linked_doc_for_call_log(call_data)
+    try:
+        call_data = utils.format_call_completed(call_data)
 
-    call_log_doc = frappe.get_doc(
-        {
-            "doctype": "Acefone Call Log",
-            **linked_doc,
-            **call_data,
-        }
-    ).save()
+        linked_doc = utils.get_linked_doc_for_call_log(call_data)
+        call_log_doc = frappe.get_doc(
+            {
+                "doctype": "Acefone Call Log",
+                **linked_doc,
+                **call_data,
+            }
+        ).save()
 
-    frappe.publish_realtime(
-        CALL_LOG_ADDED_EVENT,
-        {
-            "call_log": call_log_doc.name,
-            "call_for_doc": call_log_doc.call_for_doc,
-            "linked_doc": call_log_doc.linked_doc,
-        },
-        after_commit=True,
-    )
+        frappe.publish_realtime(
+            CALL_LOG_ADDED_EVENT,
+            {
+                "call_log": call_log_doc.name,
+                "call_for_doc": call_log_doc.call_for_doc,
+                "linked_doc": call_log_doc.linked_doc,
+            },
+            after_commit=True,
+        )
+    except Exception as e:
+        frappe.log_error("error occured in acefone handle_call_complete", e)

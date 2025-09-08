@@ -48,7 +48,6 @@ def fetch_users():
         users_res.raise_for_status()
 
         res_data = users_res.json()
-        frappe.log_error("res", res_data)
         has_more = res_data.get("has_more", False)
         users_data = res_data.get("data", [])
 

@@ -7,7 +7,7 @@ AGENT_STATUS_MAP = ["Enabled", "Blocked", "Disabled" "Busy", "Offline"]
 CALL_TYPES = {
     "INBOUND": "Inbound",
     "OUTBOUND": "Outbound",
-    "CLICK_TO_CALL": "Click to Call",
+    "CLICK_TO_CALL": "Click To Call",
 }
 DIRECTION_CALL_TYPE_MAP = {
     "inbound": CALL_TYPES["INBOUND"],
@@ -60,7 +60,7 @@ def format_call_completed(call_data):
         "caller_id": call_data.get("caller_id"),
         "agent_number": call_data.get("answered_agent_number"),
         "agent_name": call_data.get("answered_agent_name"),
-        "acefone_user": acefone_user,
+        "acefone_user": acefone_user.name if acefone_user else None,
         "missed_agents": get_missed_agents(call_data),
         "call_type": (
             DIRECTION_CALL_TYPE_MAP[call_data.get("direction")]
@@ -194,13 +194,22 @@ def get_acefone_user_by_session(only_enabled=False):
 
 def get_phone_normalized_forms(raw_number: str, default_region=None) -> list[str]:
     try:
-        parsed = parse(raw_number, default_region)
+        if not (raw_number.startswith("+") and default_region):
+            raw_number = "+" + raw_number
+        parsed = parse(raw_number, region=default_region)
         national = str(parsed.national_number)
         intl_e164 = format_number(parsed, PhoneNumberFormat.E164)
         intl_no_plus = intl_e164[1:]
         intl_dash = f"+{parsed.country_code}-{parsed.national_number}"
         return [intl_dash, intl_e164, intl_no_plus, national]
-    except Exception:
+    except Exception as e:
+        frappe.log_error(
+            "get_phone_normalized_forms err",
+            {
+                "inputs": {"raw_number": raw_number, "default_region": default_region},
+                "err": e,
+            },
+        )
         return []
 
 
