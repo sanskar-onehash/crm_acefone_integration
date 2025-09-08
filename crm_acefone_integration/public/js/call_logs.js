@@ -14,29 +14,29 @@ $(document).on("form-refresh", function (_, frm) {
       reload_call_logs(frm);
     },
   });
-});
 
-frappe.realtime.on(CALL_LOG_ADDED_EVENT, function (data) {
-  if (!data || !data.call_for_doc || !data.linked_doc) return;
+  frappe.realtime.on(CALL_LOG_ADDED_EVENT, function (data) {
+    if (!data || !data.call_for_doc || !data.linked_doc) return;
 
-  const current_route = frappe.get_route();
-  const [route_type, route_doctype, route_name] = current_route;
+    const current_route = frappe.get_route();
+    const [route_type, route_doctype, route_name] = current_route;
 
-  if (
-    route_type === "Form" &&
-    route_doctype === data.call_for_doc &&
-    route_name === data.linked_doc
-  ) {
-    const frm = frappe.ui.form.get_current();
-    if (frm) {
-      reload_call_logs(frm).then(() => {
-        frappe.show_alert({
-          message: "New call log added",
-          indicator: "green",
+    if (
+      route_type === "Form" &&
+      route_doctype === data.call_for_doc &&
+      route_name === data.linked_doc
+    ) {
+      const frm = cur_frm;
+      if (frm) {
+        reload_call_logs(frm).then(() => {
+          frappe.show_alert({
+            message: "New call log added",
+            indicator: "green",
+          });
         });
-      });
+      }
     }
-  }
+  });
 });
 
 async function reload_call_logs(frm) {
