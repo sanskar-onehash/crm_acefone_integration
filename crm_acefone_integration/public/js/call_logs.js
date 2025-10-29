@@ -67,25 +67,68 @@ async function reload_call_logs(frm) {
 }
 
 function render_call_logs_html(callLogs) {
-  let html = `<div class="acefone-call-logs-list"><style>
-.acefone-call-logs-list {
-display: flex;
-flex-direction: column;
-gap: 1rem;
-}
-.call-log-card {
-  transition: box-shadow 0.2s ease;
-  border-radius: 0.5rem;
-}
-.call-log-card:hover {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.07);
-}
-.call-log-card .badge {
-  font-size: 0.75rem;
-  padding: 0.4em 0.6em;
-  border-radius: 0.375rem;
-}
-</style>`;
+  let html = `<div class="acefone-call-logs-list">
+  <style>
+  .acefone-call-logs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .call-log-card {
+    transition: box-shadow 0.2s ease;
+    border-radius: 0.75rem;
+    border: 1px solid #f1f3f5;
+  }
+  .call-log-card:hover {
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.08);
+  }
+  .call-log-card .badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.6em;
+    border-radius: 0.4rem;
+  }
+  .agent-info {
+    font-size: 0.875rem;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .agent-info i {
+    color: #0d6efd;
+  }
+  .call-note {
+    background: #f8f9fa;
+    border-left: 3px solid #0d6efd;
+    border-radius: 0.4rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #212529;
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .call-note i {
+    color: #0d6efd;
+    margin-top: 0.32rem;
+  }
+  .view-log-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 0.75rem;
+    transition: color 0.15s ease;
+  }
+  .view-log-link:hover {
+    color: #084298;
+    text-decoration: underline;
+  }
+  </style>`;
 
   callLogs.forEach((log) => {
     const type = log.call_type || "";
@@ -93,12 +136,18 @@ gap: 1rem;
     const number = log.customer_phone || log.caller_id || "";
     const start = frappe.datetime.str_to_user(log.start_stamp) || "";
     const duration = log.duration || "0s";
+    const callNote = log.call_note || "";
+    const agentName = log.agent_name || "Unknown Agent";
+    const callLogLink = frappe.utils.get_form_link(
+      "Acefone Call Log",
+      log.name,
+    );
 
     const recording = log.recording_url
       ? `<button data-url="${log.recording_url}" class="btn btn-outline-primary btn-sm acefone_play_btn">
           <i class="fa fa-play-circle-o me-1"></i> Play Recording
          </button>`
-      : `<span class="text-muted">No Recording</span>`;
+      : `<span class="text-muted small">No Recording</span>`;
 
     const statusBadge =
       status === "Missed"
@@ -109,24 +158,42 @@ gap: 1rem;
 
     html += `
       <div class="card call-log-card mb-3 shadow-sm border-0">
-        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
-          <div class="mb-2 mb-md-0">
-            <h5 class="mb-1 text-primary">
-              <i class="fa fa-phone me-2"></i> ${number}
-            </h5>
-            <div class="text-muted small mb-1">
-              <i class="fa fa-clock me-1"></i> ${start}
-              &nbsp;|&nbsp;
-              <i class="fa fa-hourglass-half me-1"></i> ${duration}
+        <div class="card-body">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+            <div class="mb-2 mb-md-0">
+              <div class="agent-info mb-2">
+                <i class="fa fa-user-circle"></i> ${agentName}
+              </div>
+              <h5 class="mb-1 text-primary">
+                <i class="fa fa-phone me-2"></i> ${number}
+              </h5>
+              <div class="text-muted small mb-1">
+                <i class="fa fa-clock me-1"></i> ${start}
+                &nbsp;|&nbsp;
+                <i class="fa fa-hourglass-half me-1"></i> ${duration}
+              </div>
+              <div class="d-flex flex-wrap gap-2 mt-2">
+                ${typeBadge}
+                ${statusBadge}
+              </div>
             </div>
-            <div class="d-flex flex-wrap gap-2">
-              ${typeBadge}
-              ${statusBadge}
+            <div>
+              ${recording}
             </div>
           </div>
-          <div>
-            ${recording}
-          </div>
+
+          ${
+            callNote
+              ? `<div class="call-note">
+                  <i class="fa fa-sticky-note"></i>
+                  <div>${callNote}</div>
+                </div>`
+              : ""
+          }
+
+          <a href="${callLogLink}" class="view-log-link" target="_blank">
+            <i class="fa fa-external-link"></i> View Full Call Log
+          </a>
         </div>
       </div>
     `;
