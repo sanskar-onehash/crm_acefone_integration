@@ -54,6 +54,10 @@ def handle_call_answered_by_agent(call_data):
         as_dict=True,
     )
     if c2c_log_values:
+        if not message["linked_doc"]:
+            message["note_for"] = c2c_log_values.get("source_doctype")
+            message["linked_doc"] = c2c_log_values.get("source_doc")
+
         frappe.publish_realtime(
             CALL_ANSWERED_EVENT,
             message,
