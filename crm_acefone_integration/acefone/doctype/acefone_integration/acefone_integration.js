@@ -12,7 +12,7 @@ const phoneFieldsMap = {};
 frappe.ui.form.on("Acefone DocType Subcriptions", {
   subscribed_for: async function (frm, cdt, cdn) {
     const row = frappe.get_doc(cdt, cdn);
-    const gridRow = frm.fields_dict.call_subscriptions.grid.get_grid_row(
+    const gridRow = frm.fields_dict.call_log_subscriptions.grid.get_grid_row(
       row.name,
     );
     const phoneFieldControl = gridRow.columns.phone_field.field;
