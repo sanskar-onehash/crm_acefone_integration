@@ -46,12 +46,12 @@ frappe.acefone.CallPopupHandler = class CallPopupHandler {
     }
 
     this.control.dialog.add_custom_action(
-      "View Linked Doc",
+      frappe._("View Linked Doc"),
       () => this.handleViewDoc(),
       "btn-primary",
     );
     this.control.dialog.add_custom_action(
-      "Minimize",
+      frappe._("Minimize"),
       () => this.toggleMinimize(),
       "btn-primary ml-2",
     );
