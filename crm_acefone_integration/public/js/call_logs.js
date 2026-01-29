@@ -224,14 +224,19 @@ function inject_call_log_tab(frm, html) {
     .find(`[data-fieldname='${ACEFONE_TAB_CALL_LOGS_FIELD}']`)
     .empty()
     .append(html);
-  tab.wrapper.click(function (e) {
-    const playBtn = e.target.closest(".acefone_play_btn");
-    if (playBtn) {
-      playAudioPopup(playBtn.dataset.url);
-    }
-  });
+
+  tab.wrapper.off("click", handleCallLogsClick);
+  tab.wrapper.on("click", handleCallLogsClick);
+
   tab.toggle(true);
   tab.show();
+}
+
+function handleCallLogsClick(e) {
+  const playBtn = e.target.closest(".acefone_play_btn");
+  if (playBtn) {
+    playAudioPopup(playBtn.dataset.url);
+  }
 }
 
 function reset_call_log_ui(frm) {
