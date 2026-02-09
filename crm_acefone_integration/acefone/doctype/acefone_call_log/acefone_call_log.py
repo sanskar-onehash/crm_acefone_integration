@@ -8,7 +8,16 @@ CALL_LOGS_FETCH_LIMIT = 50
 
 
 class AcefoneCallLog(Document):
-    pass
+
+    def before_insert(self):
+        if not self.call_note:
+            self.call_note = frappe.db.exists(
+                "Acefone Call Note",
+                {
+                    "call_id": self.call_id,
+                    "uuid": self.uuid,
+                },
+            )
 
 
 @frappe.whitelist()
