@@ -112,8 +112,13 @@
     }
   ],
   "index_web_pages_for_search": 1,
-  "links": [],
-  "modified": "2025-08-04 10:09:36.234878",
+  "links": [
+    {
+      "link_doctype": "Acefone Call Log",
+      "link_fieldname": "call_note"
+    }
+  ],
+  "modified": "2026-03-05 12:02:48.014595",
   "modified_by": "Administrator",
   "module": "Acefone",
   "name": "Acefone Call Note",
